@@ -8,9 +8,12 @@ dependencies:
   - python-dateutil
   - matplotlib
   - ipython
+  - openpyxl
   - plotly
   - pystan
   - prophet
   - scikit-learn
   - scipy
   - seaborn
+  - xlwt
+  - xlrd
