@@ -1,6 +1,3 @@
-#. /C/ProgramData/Miniconda3/etc/profile.d/conda.sh
-# C:\\ProgramData\\Miniconda3\\condabin\\activate.bat C:\\ProgramData\\Miniconda3\\envs\\cd-python-tcc
-
 # Importando bibliotecas
 from datetime import datetime
 from datetime import timedelta
@@ -14,13 +11,14 @@ import seaborn as sns
 # PROGRAM CONSTANTS
 # PATHs
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-TREATED_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\treated')
-WIND_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Wind')
-WET_TEMP_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Wet_bulb_temperature')
-DRY_TEMP_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Dry_bulb_temperature')
-HUMID_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Humidity')
-RAD_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Radiation')
-PRESS_PATH = os.path.join(PROJECT_PATH, r'Data\Weather_data\raw\Pressure')
+TREATED_PATH = os.path.join(PROJECT_PATH, r'data\treated')
+ELECTRIC_PATH = os.path.join(PROJECT_PATH, r'data\raw\Consumption_data')
+WIND_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Wind')
+WET_TEMP_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Wet_bulb_temperature')
+DRY_TEMP_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Dry_bulb_temperature')
+HUMID_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Humidity')
+RAD_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Radiation')
+PRESS_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Pressure')
 
 # PARAMETERS
 SAVE_TREATED_DATA = False  # Toggle this true if you want to save the treated data to the treated_path
@@ -281,16 +279,36 @@ def treat_radiation(filename):
     return df_all_rad
 
 
+def treat_consumption(filename):
+    df_consumption = pd.read_excel(filename,parse_dates=['Data'])
+    
+    # treating column names
+    df_consumption.rename({'Data': 'date',
+                           'Reposição de demanda': 'demand_replacement',
+                           'Intervalo reativo': 'reactive_delay',
+                           'Posto': 'station'},
+                          axis='columns',
+                          inplace=True)
+    
+    df_consumption.columns = df_consumption.columns.str.strip().str.lower().str.replace(' ', '_', regex=False).str.replace('[', '', regex=False).str.replace(']', '', regex=False)
+    
+    # setting date as index
+    df_consumption.set_index('date', drop = True, inplace=True)
+    
+    return df_consumption
+
+
 # ================================================================
 # START OF THE PROGRAM
 
 # Treating all the weather files
-df_all_wind = excel_folder_to_df(WIND_PATH, treat_wind)  # Piling all the wind files into one df
-df_all_wet_temp = excel_folder_to_df(WET_TEMP_PATH, treat_weather, 'wet_temp')  # Piling all the wet bulb temperature files into one df
-df_all_dry_temp = excel_folder_to_df(DRY_TEMP_PATH, treat_weather, 'dry_temp')  # Piling all the dry bulb temperature files into one df
-df_all_humid = excel_folder_to_df(HUMID_PATH, treat_weather, 'humidity')  # Piling all the wet Humidity files into one df
-df_all_pres = excel_folder_to_df(PRESS_PATH, treat_weather, 'pressure')  # Piling all the Pressure files into one df
-df_all_rad = excel_folder_to_df(RAD_PATH, treat_radiation)  # Piling all the Radiation files into one df
+# df_all_wind = excel_folder_to_df(WIND_PATH, treat_wind)  # Piling all the wind files into one df
+# df_all_wet_temp = excel_folder_to_df(WET_TEMP_PATH, treat_weather, 'wet_temp')  # Piling all the wet bulb temperature files into one df
+# df_all_dry_temp = excel_folder_to_df(DRY_TEMP_PATH, treat_weather, 'dry_temp')  # Piling all the dry bulb temperature files into one df
+# df_all_humid = excel_folder_to_df(HUMID_PATH, treat_weather, 'humidity')  # Piling all the wet Humidity files into one df
+# df_all_pres = excel_folder_to_df(PRESS_PATH, treat_weather, 'pressure')  # Piling all the Pressure files into one df
+# df_all_rad = excel_folder_to_df(RAD_PATH, treat_radiation)  # Piling all the Radiation files into one df
+# df_all_consumpt = excel_folder_to_df(ELECTRIC_PATH, treat_consumption)  # Piling all the Radiation files into one df
 
 # Saving the treated data:
 if SAVE_TREATED_DATA:
@@ -301,3 +319,4 @@ if SAVE_TREATED_DATA:
     df_all_humid.to_excel(os.path.join(TREATED_PATH, 'humidity.xlsx'))
     df_all_pres.to_excel(os.path.join(TREATED_PATH, 'pressure.xlsx'))
     df_all_rad.to_excel(os.path.join(TREATED_PATH, 'radiation.xlsx'))
+    df_all_consumpt.to_excel(os.path.join(TREATED_PATH, 'electric_consumption.xlsx'))
