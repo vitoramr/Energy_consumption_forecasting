@@ -1,0 +1,11 @@
+numpy
+pandas
+python-dateutil
+matplotlib
+ipython
+plotly
+pystan==2.19.1.1
+prophet
+scikit-learn
+scipy
+seaborn
