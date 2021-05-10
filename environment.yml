@@ -7,7 +7,7 @@ dependencies:
   - pandas
   - python-dateutil
   - matplotlib
-  - ipython
+  - ipykernel
   - openpyxl
   - plotly
   - pystan
