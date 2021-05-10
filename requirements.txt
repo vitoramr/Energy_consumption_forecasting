@@ -2,7 +2,7 @@ numpy
 pandas
 python-dateutil
 matplotlib
-ipython
+ipykernel
 plotly
 scikit-learn
 scipy
