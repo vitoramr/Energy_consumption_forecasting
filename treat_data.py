@@ -21,7 +21,7 @@ RAD_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Radiation')
 PRESS_PATH = os.path.join(PROJECT_PATH, r'data\raw\Weather_data\Pressure')
 
 # PARAMETERS
-SAVE_TREATED_DATA = False  # Toggle this true if you want to save the treated data to the treated_path
+SAVE_TREATED_DATA = True  # Toggle this true if you want to save the treated data to the treated_path
 
 # ================================================================
 # DEFINING AUXILIARY FUNCTIONS
@@ -302,21 +302,21 @@ def treat_consumption(filename):
 # START OF THE PROGRAM
 
 # Treating all the weather files
-# df_all_wind = excel_folder_to_df(WIND_PATH, treat_wind)  # Piling all the wind files into one df
-# df_all_wet_temp = excel_folder_to_df(WET_TEMP_PATH, treat_weather, 'wet_temp')  # Piling all the wet bulb temperature files into one df
-# df_all_dry_temp = excel_folder_to_df(DRY_TEMP_PATH, treat_weather, 'dry_temp')  # Piling all the dry bulb temperature files into one df
-# df_all_humid = excel_folder_to_df(HUMID_PATH, treat_weather, 'humidity')  # Piling all the wet Humidity files into one df
-# df_all_pres = excel_folder_to_df(PRESS_PATH, treat_weather, 'pressure')  # Piling all the Pressure files into one df
-# df_all_rad = excel_folder_to_df(RAD_PATH, treat_radiation)  # Piling all the Radiation files into one df
-# df_all_consumpt = excel_folder_to_df(ELECTRIC_PATH, treat_consumption)  # Piling all the Radiation files into one df
+df_all_wind = excel_folder_to_df(WIND_PATH, treat_wind)  # Piling all the wind files into one df
+df_all_wet_temp = excel_folder_to_df(WET_TEMP_PATH, treat_weather, 'wet_temp')  # Piling all the wet bulb temperature files into one df
+df_all_dry_temp = excel_folder_to_df(DRY_TEMP_PATH, treat_weather, 'dry_temp')  # Piling all the dry bulb temperature files into one df
+df_all_humid = excel_folder_to_df(HUMID_PATH, treat_weather, 'humidity')  # Piling all the wet Humidity files into one df
+df_all_pres = excel_folder_to_df(PRESS_PATH, treat_weather, 'pressure')  # Piling all the Pressure files into one df
+df_all_rad = excel_folder_to_df(RAD_PATH, treat_radiation)  # Piling all the Radiation files into one df
+df_all_consumpt = excel_folder_to_df(ELECTRIC_PATH, treat_consumption)  # Piling all the Radiation files into one df
 
 # Saving the treated data:
 if SAVE_TREATED_DATA:
     print("Saving the treated data...")
-    df_all_wind.to_excel(os.path.join(TREATED_PATH, 'wind.xlsx'))
-    df_all_dry_temp.to_excel(os.path.join(TREATED_PATH, 'dry_temperature.xlsx'))
-    df_all_wet_temp.to_excel(os.path.join(TREATED_PATH, 'wet_temperature.xlsx'))
-    df_all_humid.to_excel(os.path.join(TREATED_PATH, 'humidity.xlsx'))
-    df_all_pres.to_excel(os.path.join(TREATED_PATH, 'pressure.xlsx'))
-    df_all_rad.to_excel(os.path.join(TREATED_PATH, 'radiation.xlsx'))
-    df_all_consumpt.to_excel(os.path.join(TREATED_PATH, 'electric_consumption.xlsx'))
+    df_all_wind.to_csv(os.path.join(TREATED_PATH, 'wind.csv'))
+    df_all_dry_temp.to_csv(os.path.join(TREATED_PATH, 'dry_temperature.csv'))
+    df_all_wet_temp.to_csv(os.path.join(TREATED_PATH, 'wet_temperature.csv'))
+    df_all_humid.to_csv(os.path.join(TREATED_PATH, 'humidity.csv'))
+    df_all_pres.to_csv(os.path.join(TREATED_PATH, 'pressure.csv'))
+    df_all_rad.to_csv(os.path.join(TREATED_PATH, 'radiation.csv'))
+    df_all_consumpt.to_csv(os.path.join(TREATED_PATH, 'electric_consumption.csv'))
