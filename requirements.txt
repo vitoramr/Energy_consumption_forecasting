@@ -1,3 +1,4 @@
+datetime
 numpy
 pandas
 python-dateutil
@@ -9,3 +10,4 @@ scipy
 seaborn
 xlwt
 xlrd
+xgboost
